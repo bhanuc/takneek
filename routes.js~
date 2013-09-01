@@ -4,26 +4,37 @@ module.exports = [
     { method: 'GET', path: '/findperson', config: { handler: getPersons, validate: { query: { name: Types.String() } } } },
     { method: 'GET', path: '/persons/{id}', config: { handler: getPerson } },
     { method: 'GET', path: '/addperson', config: { handler: addPerson, validate: { query: { name: Types.String(),age: Types.String(),sex: Types.String(),currentlocation: Types.String(),height: Types.String() } } } },
-     { method: 'GET', path: '/addstory', config: { handler: addStory,  validate: { query: { story: Types.String(),content: Types.String() } } } },
+     { method: 'GET', path: '/addstory', config: { handler: addStory,  validate: { query: { name: Types.String(),story: Types.String(),content: Types.String() } } } },
      { method: 'GET', path: '/addresource', config: { handler: addResource,  validate: { query: { resource: Types.String() } } } },
      { method: 'GET', path: '/addproblem', config: { handler: addProblem,  validate: { query: { problem: Types.String() } } } },
-     { method: 'GET', path: '/getproblem', config: { handler: getProblem } },
-     { method: 'GET', path: '/getresource', config: { handler: getResource } }
+     { method: 'GET', path: '/findproblem', config: { handler: findProblem,  validate: { query: { problem: Types.String() } } } },
+     { method: 'GET', path: '/findresource', config: { handler: findresource,  validate: { query: { resource: Types.String() } } } },
+     { method: 'GET', path: '/findstory', config: { handler: findstory,  validate: { query: { story: Types.String() } } } },
 ];
-function getProblem(problem1) {
+function findProblem(problem1) {
 
-    request.reply(problems);
+    return problems.filter(function(problem) {
+        return problem.name.toLowerCase() === problem1.toLowerCase();
+    });
 }
-function getResource(resource1) {
+function findResource(resource1) {
 
-     request.reply(resources);
+    return resources.filter(function(resource) {
+        return resource.name.toLowerCase() === resource1.toLowerCase();
+    });
 }
+function findStory(story1) {
 
+    return story.filter(function(story) {
+        return story.name.toLowerCase() === story1.toLowerCase();
+    });
+}
 function addStory(request) {
 
     var stories  = {
         id: story[story.length - 1].id + 1,
-       	story: request.query.story,
+        name: request.query.name,
+	story: request.query.story,
 	content: request.query.content
 	
     };
@@ -136,6 +147,6 @@ var resources = [{
 
 var problems = [{
         id: 1,
-        problem: 'Sample Problem'
+        problem: 'Sample Story'
          }
 ];
